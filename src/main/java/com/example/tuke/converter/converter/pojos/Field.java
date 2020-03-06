@@ -25,4 +25,5 @@ public class Field {
     public void setValueType(String valueType) {
         this.valueType = valueType;
     }
+
 }

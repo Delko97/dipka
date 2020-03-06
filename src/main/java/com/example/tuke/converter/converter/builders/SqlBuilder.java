@@ -20,6 +20,7 @@ public class SqlBuilder {
         return builder.toString();
     }
 
+
     public List<String>  insertToTable(Table table) {
         StringBuilder builder = new StringBuilder();
         Object valueToInsert;

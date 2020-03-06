@@ -37,4 +37,5 @@ public class DatabaseController {
     public ResponseEntity<List<TableName>> getTables() {
         return new ResponseEntity(databaseService.getTableSchemas(),HttpStatus.OK);
     }
+
  }

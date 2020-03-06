@@ -18,4 +18,5 @@ public class Customer {
     }
 
     // getters & setters omitted for brevity
+
 }
