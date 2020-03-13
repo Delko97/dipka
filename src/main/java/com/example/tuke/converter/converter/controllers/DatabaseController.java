@@ -21,14 +21,20 @@ public class DatabaseController {
     DatabaseService databaseService;
 
     @PostMapping("/insert")
-    public ResponseEntity loginAuthentification() {
+    public ResponseEntity insert() {
         databaseService.executeInsert();
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("/create")
-    public ResponseEntity loginAuthentification(@RequestBody Table table){
+    public ResponseEntity createDatabase(@RequestBody Table table){
         databaseService.createTable(table);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("/createFile")
+    public ResponseEntity createFile(@RequestBody Table table,@RequestParam String destination){
+        databaseService.createFile(table,destination);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -36,6 +42,11 @@ public class DatabaseController {
     @GetMapping("/tables")
     public ResponseEntity<List<TableName>> getTables() {
         return new ResponseEntity(databaseService.getTableSchemas(),HttpStatus.OK);
+    }
+
+    @GetMapping("/getDatabaseData")
+    public ResponseEntity<Table> getData(@RequestParam String sheetName) {
+        return new ResponseEntity(databaseService.getData(sheetName),HttpStatus.OK);
     }
 
  }

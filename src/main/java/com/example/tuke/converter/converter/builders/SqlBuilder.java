@@ -9,11 +9,11 @@ import java.util.List;
 public class SqlBuilder {
 
     public String createTable(Table table) {
-        StringBuilder builder = new StringBuilder("CREATE TABLE " + table.getTableName() +"\n(");
+        StringBuilder builder = new StringBuilder("CREATE TABLE " + table.getTableName() +"\n (");
         builder.append("id INT(11) NOT NULL AUTO_INCREMENT,\n");
         for (int i = 0; i < table.getTableFields().size(); i++ ) {
             builder.append(table.getTableFields().get(i) + " " + getType(table.getTableValues().get(0).get(i)) + ",");
-            builder.append("\n");
+            builder.append(" \n");
         }
         builder.append("CONSTRAINT " + table.getTableName() + "_id PRIMARY KEY (id));");
 
@@ -39,7 +39,7 @@ public class SqlBuilder {
                 builder.append(valueToInsert);
             }
             builder.deleteCharAt(builder.toString().length()-1);
-            builder.append(")\n");
+            builder.append(");\n");
             queries.add(builder.toString());
             builder = new StringBuilder();
 

@@ -2,11 +2,16 @@ package com.example.tuke.converter.converter.services;
 
 import com.example.tuke.converter.converter.builders.SqlBuilder;
 import com.example.tuke.converter.converter.pojos.Customer;
+import com.example.tuke.converter.converter.pojos.Field;
 import com.example.tuke.converter.converter.pojos.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Service;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -57,6 +62,31 @@ public class DatabaseService {
         });
     }
 
+    public void createFile(Table table,String destination) {
+        String string = sqlBuilder.createTable(table);
+        List<String> insert = sqlBuilder.insertToTable(table);
+        if (!destination.endsWith(".txt")) {
+            destination += ".txt";
+        }
+
+        try {
+            FileWriter myWriter = new FileWriter(destination);
+            myWriter.write(string + '\n');
+            insert.forEach(item -> {
+                try {
+                    myWriter.write(item);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
     public List<String> getTableSchemas() {
         List<String> tableNames = new ArrayList<>();
         jdbcTemplate.query(
@@ -69,4 +99,37 @@ public class DatabaseService {
         return tableNames;
     }
 
+    public Table getData (String sheetName) {
+        Table table = new Table();
+        table.setTableName(sheetName);
+        List<List<Field>> fieldValues = new ArrayList<>();
+        List<String> firstRow = new ArrayList<>();
+        String selectString = "SELECT * from " + sheetName;
+         jdbcTemplate.query(selectString, (ResultSetExtractor) rs -> {
+
+
+             ResultSetMetaData rsmd = rs.getMetaData();
+             int count = rsmd.getColumnCount();
+             for(int i = 1 ; i <= count ; i++){
+                 firstRow.add(rsmd.getColumnName(i));
+             }
+             table.setTableFields(firstRow);
+
+
+             while (rs.next()) {
+                 List<Field> row = new ArrayList<>();
+                 for (int i = 1;i <= firstRow.size();i++) {
+                     row.add(new Field(rs.getString(i) == null ? "-" : rs.getString(i),"string"));
+                 }
+                 fieldValues.add(row);
+             }
+             return count;
+         });
+         table.setTableValues(fieldValues);
+         firstRow.forEach(item -> System.out.println(item));
+         System.out.println(firstRow.size());
+
+         return table;
+
+    }
 }
