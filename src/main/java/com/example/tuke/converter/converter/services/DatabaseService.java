@@ -63,15 +63,13 @@ public class DatabaseService {
         });
     }
 
-    public void createFile(Table table,String destination) {
+    public void createFile(Table table) {
         String string = sqlBuilder.createTable(table);
         List<String> insert = sqlBuilder.insertToTable(table);
-        if (!destination.endsWith(".txt")) {
-            destination += ".txt";
-        }
+        String home = System.getProperty("user.home") + "/Desktop/" + table.getTableName() + ".txt";
 
         try {
-            FileWriter myWriter = new FileWriter(destination);
+            FileWriter myWriter = new FileWriter(home);
             myWriter.write(string + '\n');
             insert.forEach(item -> {
                 try {

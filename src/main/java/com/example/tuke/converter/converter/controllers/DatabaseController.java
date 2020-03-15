@@ -33,8 +33,8 @@ public class DatabaseController {
     }
 
     @PostMapping("/createFile")
-    public ResponseEntity createFile(@RequestBody Table table,@RequestParam String destination){
-        databaseService.createFile(table,destination);
+    public ResponseEntity createFile(@RequestBody Table table){
+        databaseService.createFile(table);
         return new ResponseEntity(HttpStatus.OK);
     }
 

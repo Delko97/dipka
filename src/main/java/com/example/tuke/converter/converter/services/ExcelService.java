@@ -118,16 +118,11 @@ public class ExcelService {
 
             for (Field field : list) {
                 Cell cell = row.createCell(columnCount++);
-                if (field.getValueType().equals("string")) {
+                if (!field.getValue().equals("-")) {
                     cell.setCellValue((String) field.getValue());
-                } else if (field.getValueType().equals("number")) {
-                    cell.setCellValue((double) field.getValue());
-                } else if (field.getValueType().equals("boolean")) {
-                    cell.setCellValue((boolean) field.getValue());
-                } else if (field.getValueType().equals("blank")) {
+                }  else
                     cell.setCellValue("");
                 }
-            }
 
         }
 
