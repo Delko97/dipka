@@ -38,8 +38,8 @@ public class ExcelService {
         table.setTableFields(firstRow);
 
         //get rest of the table
-        List<List<Field>> wholeTable = new ArrayList<>();
-        List<Field> oneRow;
+        List<List<String>> wholeTable = new ArrayList<>();
+        List<String> oneRow;
         while (iterator.hasNext()) {
             nextRow = iterator.next();
             oneRow = new ArrayList<>();
@@ -49,19 +49,19 @@ public class ExcelService {
                 switch (cell.getCellTypeEnum()) {
 
                     case STRING:
-                        oneRow.add(new Field(cell.getStringCellValue(), "string"));
+                        oneRow.add(cell.getStringCellValue());
                         System.out.print(cell.getStringCellValue() + "\t");
                         break;
                     case BOOLEAN:
-                        oneRow.add(new Field(cell.getBooleanCellValue(), "boolean"));
+                        oneRow.add(String.valueOf(cell.getBooleanCellValue()));
                         System.out.print(cell.getBooleanCellValue() + "\t");
                         break;
                     case NUMERIC:
-                        oneRow.add(new Field(cell.getNumericCellValue(), "numeric"));
+                        oneRow.add(String.valueOf(cell.getNumericCellValue()));
                         System.out.print(cell.getNumericCellValue() + "\t");
                         break;
                     default:
-                        oneRow.add(new Field("-", "blank"));
+                        oneRow.add("-");
                         System.out.print("-" + "\t");
                         break;
 
@@ -111,15 +111,15 @@ public class ExcelService {
             Cell cell = row.createCell(columnCount++);
             cell.setCellValue(field);
         }
-        for (List<Field> list : table.getTableValues()) {
+        for (List<String> list : table.getTableValues()) {
             row = sheet.createRow(rowCount++);
 
             columnCount = 0;
 
-            for (Field field : list) {
+            for (String field : list) {
                 Cell cell = row.createCell(columnCount++);
-                if (!field.getValue().equals("-")) {
-                    cell.setCellValue((String) field.getValue());
+                if (!field.equals("-")) {
+                    cell.setCellValue(field);
                 }  else
                     cell.setCellValue("");
                 }

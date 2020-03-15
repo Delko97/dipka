@@ -25,17 +25,17 @@ public class SqlBuilder {
         StringBuilder builder = new StringBuilder();
         Object valueToInsert;
         List<String> queries = new ArrayList<>();
-        for (List<Field> values : table.getTableValues()) {
+        for (List<String> values : table.getTableValues()) {
             builder.append("INSERT INTO " + table.getTableName() + "(");
             for (int i = 0; i < table.getTableFields().size(); i++) {
-                if (!values.get(i).getValue().equals("-"))
+                if (!values.get(i).equals("-"))
                     builder.append(table.getTableFields().get(i) + ",");
             }
             builder.deleteCharAt(builder.toString().length() - 1);
             builder.append(") VALUES (");
-            for (Field value : values) {
-                valueToInsert = value.getValue().equals("-") ? "" :
-                        ("\'" + value.getValue()+ "\'" + "," );
+            for (String value : values) {
+                valueToInsert = value.equals("-") ? "" :
+                        ("\'" + value + "\'" + "," );
                 builder.append(valueToInsert);
             }
             builder.deleteCharAt(builder.toString().length()-1);

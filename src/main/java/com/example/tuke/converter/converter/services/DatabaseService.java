@@ -101,7 +101,7 @@ public class DatabaseService {
     public Table getData (String sheetName) {
         Table table = new Table();
         table.setTableName(sheetName);
-        List<List<Field>> fieldValues = new ArrayList<>();
+        List<List<String>> fieldValues = new ArrayList<>();
         List<String> firstRow = new ArrayList<>();
         String selectString = "SELECT * from " + sheetName;
          jdbcTemplate.query(selectString, (ResultSetExtractor) rs -> {
@@ -116,9 +116,9 @@ public class DatabaseService {
 
 
              while (rs.next()) {
-                 List<Field> row = new ArrayList<>();
+                 List<String> row = new ArrayList<>();
                  for (int i = 1;i <= firstRow.size();i++) {
-                     row.add(new Field(rs.getString(i) == null ? "-" : rs.getString(i),"string"));
+                     row.add(rs.getString(i) == null ? "-" : rs.getString(i));
                  }
                  fieldValues.add(row);
              }

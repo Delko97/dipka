@@ -7,7 +7,7 @@ public class Table {
 
     private String tableName;
     private List<String> tableFields;
-    private List<List<Field>> tableValues;
+    private List<List<String>> tableValues;
 
     public String getTableName() {
         return tableName;
@@ -25,11 +25,11 @@ public class Table {
         this.tableFields = tableFields;
     }
 
-    public List<List<Field>> getTableValues() {
+    public List<List<String>> getTableValues() {
         return tableValues;
     }
 
-    public void setTableValues(List<List<Field>> tableValues) {
+    public void setTableValues(List<List<String>> tableValues) {
         this.tableValues = tableValues;
     }
 
