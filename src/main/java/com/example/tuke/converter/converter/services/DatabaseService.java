@@ -54,7 +54,8 @@ public class DatabaseService {
     public void createTable(Table table) {
         String string = sqlBuilder.createTable(table);
         List<String> insert = sqlBuilder.insertToTable(table);
-        jdbcTemplate.execute("DROP TABLE Sheet1");
+        String dropTable = "DROP TABLE IF EXISTS " + table.getTableName();
+        jdbcTemplate.execute(dropTable);
         jdbcTemplate.execute(string);
         insert.forEach(query -> {
             System.out.println(query);
